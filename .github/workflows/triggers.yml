@@ -1,0 +1,37 @@
+name: Ejemplo de Triggers
+
+# La sección 'on' define los eventos que disparan el workflow
+on:
+  # 1. Trigger de PUSH: Se activa cuando subes código
+  push:
+    branches:
+      - main
+      - 'feature/*'
+    paths-ignore:
+      - '**.md'
+
+  # 2. Trigger MANUAL: Permite ejecutar el workflow desde la interfaz de GitHub
+  workflow_dispatch:
+    inputs:
+      ambiente:
+        description: 'Ambiente de despliegue'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+  # 3. Trigger PROGRAMADO: Se ejecuta automáticamente usando sintaxis cron
+  schedule:
+    # Se ejecuta a las 05:00 UTC todos los días
+    - cron: '0 5 * * *'
+
+jobs:
+  saludo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ejecutar comando de prueba
+        run: |
+          echo "El workflow se ha disparado correctamente."
+          echo "Evento: ${{ github.event_name }}"
