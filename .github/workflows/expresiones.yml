@@ -1,0 +1,28 @@
+name: Workflow de Expresiones Comunes
+run-name: ¡Estoy aprendiendo a usar Expresiones!
+
+on: [push, pull_request]
+
+jobs:
+  logic-and-math:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. EXPRESIÓN DE COMPARACIÓN (Lógica)
+      # Usamos 'if' para decidir si un paso se ejecuta basado en la rama.
+      - name: Verificar si es la rama principal
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: echo "Ejecutando lógica de producción porque estás en 'main'."
+
+      # 2. EXPRESIÓN MATEMÁTICA / ESTADO (Cálculos dinámicos)
+      # 'success()', 'failure()' o 'always()' evalúan el estado del workflow.
+      - name: Reporte de Error
+        if: ${{ failure() }} # Se ejecuta solo si el paso anterior falló
+        run: echo "Algo salió mal en los cálculos previos."
+
+      # 3. EXPRESIÓN DE CONTEXTO / TIEMPO (Datos dinámicos)
+      # Usamos el contexto para obtener información del entorno en tiempo real.
+      - name: Mostrar Info del Evento
+        run: |
+          echo "ID de ejecución: ${{ github.run_id }}"
+          echo "Usuario: ${{ github.actor }}"
+          echo "Timestamp: ${{ github.event.repository.updated_at }}"

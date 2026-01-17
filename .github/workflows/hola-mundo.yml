@@ -1,0 +1,23 @@
+name: Aprendiendo github Action
+
+# Define cuándo se ejecutará el flujo de trabajo
+on: [push]
+ 
+jobs:
+  build:
+    runs-on: ubuntu-latest # El sistema operativo donde correrá el script
+
+    steps:
+      # 1. Descarga el código de tu repositorio al servidor de GitHub
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      # 2. Configura la versión de Python que prefieras
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      # 3. Ejecuta tu script
+      - name: Ejecutar script de Python
+        run: python main.py
