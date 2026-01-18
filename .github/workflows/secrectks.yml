@@ -1,0 +1,34 @@
+name: Ejecutar Script con Secreto
+run-name: ejecutando my secrect in pyton
+# 1. Definimos que solo se dispare en la branch main
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  # Esto permite ejecutarlo manualmente desde la pestaña Actions
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 2. Descargamos el código del repositorio
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      # 3. Configuramos Python (o el lenguaje que prefieras)
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      # 4. Inyectamos el secreto como una variable de entorno
+      - name: Ejecutar script usando el secreto
+        env:
+          # Aquí mapeamos tu secreto de GitHub a una variable de entorno del sistema
+          MY_PASSWORD: ${{ secrets.PASSWORDKS }}
+        run: |
+          echo "Ejecutando el script..."
+          python mi_script.py
