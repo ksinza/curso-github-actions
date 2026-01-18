@@ -1,0 +1,35 @@
+name: Workflow en Rama Aprendizaje
+run-name: Aprendiendo variables en githun-action
+# Este workflow se dispara solo cuando hay cambios en tu rama específica
+on:
+  push:
+    branches:
+      - "aprendiendo-github-actions"
+  # Mantenemos esto para que puedas lanzarlo manualmente desde la pestaña Actions
+  workflow_dispatch:
+
+jobs:
+  procesar-datos:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar código de la rama específica
+        uses: actions/checkout@v4
+        with:
+          ref: "aprendiendo-github-actions"
+
+      - name: Usar variables de GitHub
+        env:
+          USUARIO: ${{ vars.Nombre }}
+          CARGO: ${{ vars.Role }}
+        run: |
+          echo "Conectando al entorno de desarrollo..."
+          echo "Usuario activo: $USUARIO"
+          echo "Rol del usuario: $CARGO"
+          echo "Trabajando sobre la rama: ${{ github.ref_name }}"
+
+      - name: Ejecutar script de prueba
+        # Aquí podrías llamar a tu script de Python que mencionaste antes
+        run: |
+          echo "Iniciando validaciones para el equipo de desarrollo en Colombia..."
+          # python script.py
