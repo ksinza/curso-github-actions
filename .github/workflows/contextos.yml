@@ -1,0 +1,40 @@
+name: Ejemplo de Contextos y Seguridad
+run-name: ¡Estoy aprendiendo a usar Contextos!
+
+on:
+  push:
+    branches: [ "main" ]
+
+# Definición de variables de entorno globales
+env:
+  APP_NAME: "MiSuperApp"
+  ENVIRONMENT: "production"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Mostrar información del contexto GitHub
+        run: |
+          echo "Hola, el flujo fue iniciado por: ${{ github.actor }}"
+          echo "Estamos trabajando en el repositorio: ${{ github.repository }}"
+          echo "El evento que disparó esto fue: ${{ github.event_name }}"
+
+      - name: Uso de variables de entorno (env)
+        run: |
+          echo "Desplegando la aplicación: ${{ env.APP_NAME }}"
+          echo "En el ambiente de: ${{ env.ENVIRONMENT }}"
+
+      - name: Uso de Secretos (secrets)
+        # Aquí simulamos un login usando un token guardado en GitHub Secrets
+        run: |
+          echo "Conectando a la base de datos con el token..."
+          # Importante: GitHub enmascarará esto en los logs como ***
+          echo "Token: ${{ secrets.DB_PASSWORD }}"
+        env:
+          # También puedes pasar un secreto como variable de entorno local al paso
+          DB_TOKEN: ${{ secrets.DB_PASSWORD }}
