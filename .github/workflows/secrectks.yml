@@ -25,6 +25,11 @@ jobs:
           python-version: '3.10'
 
       # 4. Inyectamos el secreto como una variable de entorno
+      - name: Diagnóstico de archivos
+        run: |
+          echo "Contenido del directorio actual:"
+          ls -R
+          
       - name: Ejecutar script usando el secreto
         env:
           # Aquí mapeamos tu secreto de GitHub a una variable de entorno del sistema
